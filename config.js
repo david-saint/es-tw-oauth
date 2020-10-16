@@ -1,4 +1,5 @@
 module.exports = {
+  'test': process.env.TEST,
   'PORT': process.env.PORT,
   'HOSTPATH': process.env.HOSTPATH,
   'ACCESS_TOKEN': process.env.ACCESS_TOKEN,

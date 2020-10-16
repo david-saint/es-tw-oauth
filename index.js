@@ -125,6 +125,7 @@ app.get('/sessions/callback', function(req, res){
       req.session.oauthAccessToken = oauthAccessToken;
       req.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
       console.log({oauthAccessToken, oauthAccessTokenSecret, results})
+      process.env.TEST = 'oauthAccessToken';
       consumer().get("https://api.twitter.com/1.1/account/verify_credentials.json", 
                       req.session.oauthAccessToken, 
                       req.session.oauthAccessTokenSecret, 
@@ -154,15 +155,13 @@ app.get('/statuses/user_timeline', function(req, res) {
   });
 
   T.get('/statuses/user_timeline', {
-    screen_name: config.MONITORED_ACCOUNT,
-    count: 50,
+    screen_name: req.query.screen_name,
+    count: req.query.count || 50,
     exclude_replies: true,
     include_rts: true,
+    tweet_mode: 'extended',
   }, (err, data, response) => {
-      console.log({
-        err,
-        data,
-      });
+      console.log(config.test);
       res.json(data);
   });
 });
