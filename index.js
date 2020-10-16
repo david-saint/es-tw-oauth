@@ -123,6 +123,7 @@ app.get('/sessions/callback', function(req, res){
     } else {
       req.session.oauthAccessToken = oauthAccessToken;
       req.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
+      console.log({oauthAccessToken, oauthAccessTokenSecret, results})
       consumer().get("https://api.twitter.com/1.1/account/verify_credentials.json", 
                       req.session.oauthAccessToken, 
                       req.session.oauthAccessTokenSecret, 
@@ -131,6 +132,7 @@ app.get('/sessions/callback', function(req, res){
           res.send("Error getting twitter screen name : " + sys.inspect(error), 500);
         } else {
           data = JSON.parse(data);
+          console.log(data);
           req.session.twitterScreenName = data["screen_name"];  
           req.session.twitterLocaltion = data["location"];  
           res.send('You are signed in with Twitter screenName ' + req.session.twitterScreenName + ' and twitter thinks you are in '+ req.session.twitterLocaltion)
