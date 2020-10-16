@@ -147,8 +147,8 @@ app.get('/retweets_by_me', function(req, res) {
   var T = new Twit({
     consumer_key: config.TWITTER_CONSUMER_KEY,
     consumer_secret: config.TWITTER_CONSUMER_SECRET,
-    access_token: req.session.oauthAccessToken,
-    access_token_secret: req.session.oauthAccessTokenSecret,
+    access_token: config.ACCESS_TOKEN, // testing hardcoded access_tokens
+    access_token_secret: config.ACCESS_TOKEN_SECRET, // testing hardcoded access_tokens
     timeout_ms: 60*1000,  // optional HTTP request timeout to apply to all requests.
     strictSSL: true,     // optional - requires SSL certificates to be valid.
   });
@@ -157,7 +157,6 @@ app.get('/retweets_by_me', function(req, res) {
       console.log({
         err,
         data,
-        response,
       });
       res.json(data);
   });
