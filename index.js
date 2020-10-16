@@ -76,9 +76,9 @@ app.get('/sessions/connect', function(req, res){
     if (error) {
       res.send("Error getting OAuth request token : " + sys.inspect(error), 500);
     } else { 
-      sys.puts("results>>"+sys.inspect(results));
-      sys.puts("oauthToken>>"+oauthToken);
-      sys.puts("oauthTokenSecret>>"+oauthTokenSecret);
+      console.log("results>>"+sys.inspect(results));
+      console.log("oauthToken>>"+oauthToken);
+      console.log("oauthTokenSecret>>"+oauthTokenSecret);
  
       req.session.oauthRequestToken = oauthToken;
       req.session.oauthRequestTokenSecret = oauthTokenSecret;
@@ -89,9 +89,9 @@ app.get('/sessions/connect', function(req, res){
 
 
 app.get('/sessions/callback', function(req, res){
-  sys.puts("oauthRequestToken>>"+req.session.oauthRequestToken);
-  sys.puts("oauthRequestTokenSecret>>"+req.session.oauthRequestTokenSecret);
-  sys.puts("oauth_verifier>>"+req.query.oauth_verifier);
+  console.log("oauthRequestToken>>"+req.session.oauthRequestToken);
+  console.log("oauthRequestTokenSecret>>"+req.session.oauthRequestTokenSecret);
+  console.log("oauth_verifier>>"+req.query.oauth_verifier);
   consumer().getOAuthAccessToken(
     req.session.oauthRequestToken, 
     req.session.oauthRequestTokenSecret, 
