@@ -44,7 +44,9 @@ app.use(express.json());
 // Add headers
 app.use((req, res, next) => {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'musing-gates-921a67.netlify.app');
+  res.setHeader('Access-Control-Allow-Origin', 'https://musing-gates-921a67.netlify.app');
+
+  res.setHeader('Vary', 'Origin');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
