@@ -6,7 +6,8 @@ require('dotenv').config();
 var express = require('express')
   , http = require('http')
   , logger = require('morgan')
-  , path = require('path');
+  , path = require('path')
+  , session = require('express-session');
 
 var {
   notFound,
@@ -22,6 +23,15 @@ var oauth = require('oauth');
 
 
 var app = express();
+
+var sessionOptions = {
+  secret: config.EXPRESS_SESSION_SECRET,
+  cookie: {
+    maxAge: 269999999999
+  },
+  saveUninitialized: true,
+  resave:true
+};
 
 // Log requests to the console
 app.use(logger('dev'));
@@ -48,6 +58,17 @@ app.use((req, res, next) => {
   // Pass to next layer of middleware
   next();
 });
+
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1);
+  sessionOptions.cookie.secure = true;
+}
+else {
+  sessionOptions.cookie.secure = false;
+}
+
+app.use(session(sessionOptions));
 
 
 app.get('/', function(req, res){
@@ -89,8 +110,8 @@ app.get('/sessions/connect', function(req, res){
 
 
 app.get('/sessions/callback', function(req, res){
-  console.log("oauthRequestToken>>"+req.session.oauthRequestToken);
-  console.log("oauthRequestTokenSecret>>"+req.session.oauthRequestTokenSecret);
+  console.log("oauthRequestToken>>"+ req.session.oauthRequestToken);
+  console.log("oauthRequestTokenSecret>>"+ req.session.oauthRequestTokenSecret);
   console.log("oauth_verifier>>"+req.query.oauth_verifier);
   consumer().getOAuthAccessToken(
     req.session.oauthRequestToken, 
