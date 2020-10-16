@@ -143,7 +143,7 @@ app.get('/sessions/callback', function(req, res){
   });
 });
 
-app.get('/retweets_by_me', function(req, res) {
+app.get('/statuses/user_timeline', function(req, res) {
   var T = new Twit({
     consumer_key: config.TWITTER_CONSUMER_KEY,
     consumer_secret: config.TWITTER_CONSUMER_SECRET,
@@ -153,7 +153,12 @@ app.get('/retweets_by_me', function(req, res) {
     strictSSL: true,     // optional - requires SSL certificates to be valid.
   });
 
-  T.get('/statuses/retweets_of_me', {count: 50}, (err, data, response) => {
+  T.get('/statuses/user_timeline', {
+    screen_name: config.MONITORED_ACCOUNT,
+    count: 50,
+    exclude_replies: true,
+    include_rts: true,
+  }, (err, data, response) => {
       console.log({
         err,
         data,
