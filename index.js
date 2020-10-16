@@ -20,6 +20,7 @@ console.log(config.PORT);
 
 var sys = require('util');
 var oauth = require('oauth');
+var Twit = require('twit');
 
 
 var app = express();
@@ -139,6 +140,26 @@ app.get('/sessions/callback', function(req, res){
         }  
       });  
     }
+  });
+});
+
+app.get('/retweets_by_me', function(req, res) {
+  var T = new Twit({
+    consumer_key: config.TWITTER_CONSUMER_KEY,
+    consumer_secret: config.TWITTER_CONSUMER_SECRET,
+    access_token: req.session.oauthAccessToken,
+    access_token_secret: req.session.oauthAccessTokenSecret,
+    timeout_ms: 60*1000,  // optional HTTP request timeout to apply to all requests.
+    strictSSL: true,     // optional - requires SSL certificates to be valid.
+  });
+
+  T.get('/statuses/retweets_of_me', {count: 50}, (err, data, response) => {
+      console.log({
+        err,
+        data,
+        response,
+      });
+      res.json(data);
   });
 });
 
