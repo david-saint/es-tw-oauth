@@ -136,7 +136,6 @@ app.get('/sessions/callback', function(req, res){
           res.send("Error getting twitter screen name : " + sys.inspect(error), 500);
         } else {
           data = JSON.parse(data);
-          console.log(data);
           req.session.twitterScreenName = data["screen_name"];  
           req.session.twitterLocaltion = data["location"];  
           res.send('You are signed in with Twitter screenName ' + req.session.twitterScreenName + ' and twitter thinks you are in '+ req.session.twitterLocaltion)
@@ -156,9 +155,10 @@ app.get('/statuses/user_timeline', function(req, res) {
     strictSSL: true,     // optional - requires SSL certificates to be valid.
   });
 
-  T.get('/statuses/user_timeline', {
-    screen_name: req.query.screen_name,
+  T.get('/search/tweets', {
+    q: '@' + req.query.screen_name,
     count: req.query.count || 50,
+    result_type: 'recent',
     exclude_replies: true,
     include_rts: true,
     tweet_mode: 'extended',
