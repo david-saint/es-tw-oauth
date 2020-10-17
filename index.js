@@ -155,10 +155,9 @@ app.get('/statuses/user_timeline', function(req, res) {
     strictSSL: true,     // optional - requires SSL certificates to be valid.
   });
 
-  T.get('/search/tweets', {
-    q: '@' + req.query.screen_name,
+  T.get('/statuses/user_timeline', {
+    screen_name: req.query.screen_name,
     count: req.query.count || 50,
-    result_type: 'recent',
     exclude_replies: true,
     include_rts: true,
     tweet_mode: 'extended',
